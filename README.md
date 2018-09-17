@@ -1,56 +1,38 @@
 # PYSILICO: Prosilica AVT camera controller for Plico
 
+| [![Build Status][travis]][travislink] | [![Coverage Status][coveralls]][coverallslink] | 
+
+pysilico is an application to control [Allied AVT/Prosilica][allied] cameras (and possibly other GigE cameras) under the [plico][plico] environment.
+
+
+
+[plico]: https://github.com/lbusoni/plico
+[allied]: https://www.alliedvision.com
+[travis]: https://travis-ci.com/lbusoni/pysilico.svg?branch=master "go to travis"
+[travislink]: https://travis-ci.com/lbusoni/pysilico
+[coveralls]: https://coveralls.io/repos/github/lbusoni/pysilico/badge.svg?branch=master "go to coveralls"
+[coverallslink]: https://coveralls.io/github/lbusoni/pysilico
+
 
 ## Installation
 
-### Installing
-From the wheel
+On the client 
 
 ```
-pip pysilico-XXX.whl --process-dependency-links
-```
-
-from Source
-
-```
-pip install . --process-dependency-links
-```
-
-During development you want to use
-
-```
-pip install -e . --process-dependency-links
-```
-
-that install a python egg with symlinks to the source directory in such 
-a way that chages in the python code are immediately available without 
-the need for re-installing (beware of conf/calib files!)
-
-### Uninstall
-
-```
-pip uninstall pysilico
-```
-
-### Config files
-
-The application uses `appdirs` to locate configurations, calibrations 
-and log folders: the path varies as it is OS specific. 
-The configuration files are copied when the application is first used
-from their original location in the python package to the final
-destination, where they are supposed to be modified by the user.
-The application never touches an installed file (no delete, no overwriting)
-
-To query the system for config file location, in a python shell:
-
-```
-import pysilico
-pysilico.defaultConfigFilePath
+pip install pysilico
 ```
 
 
-The user can specify customized conf/calib/log file path for both
-servers and client (how? ask!)
+On the server 
+
+First install Vimba (that comes with the camera, or download Vimba SDK from 
+```
+pip install pysilico-server
+```
+
+The pysilico-server package installs also the client package.
+
+
 
 
 ## Usage
@@ -63,32 +45,26 @@ Starts the 2 servers that control one device each.
 pysilico_start
 ```
 
+### Using the GUI
 
-### Using client 
+Run `pysilico_gui`
+  
 
-In a Python / IPython shell:
+### Using the client module 
+
+In a python terminal on the client computer:
 
 ```
 In [1]: import pysilico
 
-In [2]: cam1= pysilico.camera('avt1')
+In [2]: cam1= pysilico.camera('192.168.1.18', 7100)
 
-In [3]: cam2= pysilico.camera('avt2')
+In [3]: cam2= pysilico.camera('192.168.1.18', 7110)
 
-In [4]: cam1.getLastFrame()
+In [4]: frames= cam1.getFutureFrames(10)
 ```
 
-
-### Terminal
-
-An ipython terminal
-
-```
-pysilico_terminal
-```
-
-
-### Stopping Tipico
+### Stopping pysilico
 
 To kill the servers run
 
