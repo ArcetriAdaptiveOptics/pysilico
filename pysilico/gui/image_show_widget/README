@@ -1,0 +1,1 @@
+pyside2-uic image_show_basic_widget.ui -o image_show_basic_widget_ui.py; python -m Qt --convert image_show_basic_widget_ui.py
