@@ -66,7 +66,7 @@ class CameraClient(AbstractCameraClient,
     def _getLastAvailableFrame(self):
         self._lastFrame= self._rpcHandler.recvCameraFrame(
             self._subscriberSocket,
-            timeoutInSec=Timeout.WFS_CAMERA_GET_FRAME_TIMEOUT)
+            timeoutInSec=Timeout.GET_FRAME_TIMEOUT)
         return self._lastFrame
 
 
@@ -76,7 +76,7 @@ class CameraClient(AbstractCameraClient,
     def getFutureFrames(self,
                         numberOfReturnedImages,
                         numberOfFramesToAverageForEachImage=1,
-                        timeoutSec=Timeout.WFS_CAMERA_GET_FRAME_TIMEOUT):
+                        timeoutSec=Timeout.GET_FRAME_TIMEOUT):
         self._subscriberSocket.connect(self._subscriberSocketAddress)
         trashFirst= self._getLastAvailableFrame()
         frames= MultipleFrameRetriever.getFrames(
@@ -105,7 +105,7 @@ class CameraClient(AbstractCameraClient,
     @override
     def setExposureTime(self,
                         exposureTimeInMilliSeconds,
-                        timeoutSec=Timeout.WFS_CAMERA_GET_FRAME_TIMEOUT):
+                        timeoutSec=Timeout.GET_FRAME_TIMEOUT):
         self._logger.notice("Setting exposure time to %f ms" %
                             exposureTimeInMilliSeconds)
         return self._rpcHandler.sendRequest(
@@ -123,7 +123,7 @@ class CameraClient(AbstractCameraClient,
     @override
     def getSnapshot(self,
                     prefix,
-                    timeoutSec=Timeout.WFS_CAMERA_GET_FRAME_TIMEOUT):
+                    timeoutSec=Timeout.GET_FRAME_TIMEOUT):
         status= self.getStatus(timeoutInSec=timeoutSec)
         self._logger.notice("Getting snapshot for %s " % prefix)
         return self._createSnapshotFromStatus(prefix, status)
@@ -144,7 +144,7 @@ class CameraClient(AbstractCameraClient,
     @override
     def setBinning(self,
                    binning,
-                   timeoutSec=Timeout.WFS_CAMERA_GET_FRAME_TIMEOUT):
+                   timeoutSec=Timeout.GET_FRAME_TIMEOUT):
         self._logger.notice("Setting binning to %d " % binning)
         return self._rpcHandler.sendRequest(
             self._requestSocket, 'setBinning',
@@ -160,7 +160,7 @@ class CameraClient(AbstractCameraClient,
 
     @override
     def setFrameRate(self, frameRate,
-                     timeoutSec=Timeout.WFS_CAMERA_GET_FRAME_TIMEOUT):
+                     timeoutSec=Timeout.GET_FRAME_TIMEOUT):
         self._logger.notice("Setting frameRate to %f" % frameRate)
         return self._rpcHandler.sendRequest(
             self._requestSocket, 'setFrameRate',
@@ -176,7 +176,7 @@ class CameraClient(AbstractCameraClient,
 
     @override
     @returns(CameraFrame)
-    def getDarkFrame(self, timeoutSec=Timeout.WFS_CAMERA_GET_FRAME_TIMEOUT):
+    def getDarkFrame(self, timeoutSec=Timeout.GET_FRAME_TIMEOUT):
         return self._rpcHandler.sendRequest(
             self._requestSocket, 'getDarkFrame',
             [],
@@ -185,7 +185,7 @@ class CameraClient(AbstractCameraClient,
 
     @override
     def setDarkFrame(self, darkFrame,
-                     timeoutSec=Timeout.WFS_CAMERA_GET_FRAME_TIMEOUT):
+                     timeoutSec=Timeout.GET_FRAME_TIMEOUT):
         assert isinstance(darkFrame, CameraFrame)
         return self._rpcHandler.sendRequest(
             self._requestSocket, 'setDarkFrame',
