@@ -2,12 +2,9 @@
 from setuptools import setup
 
 
-
-
-
 setup(name='pysilico',
       description='AVT-Prosilica camera controller with PLICO',
-      version='0.11',
+      version='0.12',
       classifiers=['Development Status :: 4 - Beta',
                    'Operating System :: POSIX :: Linux',
                    'Programming Language :: Python :: 2.7',
