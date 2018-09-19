@@ -96,7 +96,6 @@ class CameraControlGui(QtWidgets.QMainWindow):
         print(self._ui)
         print(self._ui.imageShowWidget)
 
-        self._cacheData()
 
         self._setUpConnectButton()
         self._setUpExposureTimeLineEdit()
