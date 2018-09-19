@@ -1,6 +1,10 @@
-#from PyQt5.Qt import QApplication
-#from PyQt5 import QtCore, QtWidgets, uic
-from plico.gui.image_show_widget.image_show_basic_widget import ColorMaps
+import sys
+import numpy as np
+from pysilico.gui.image_show_widget.image_show_basic_widget import ColorMaps
+
+import pysilico
+from plico.rpc.zmq_remote_procedure_call import ZmqRpcTimeoutError
+from pysilico.types.camera_frame import CameraFrame
 
 
 def _importPyQt5():
@@ -28,7 +32,7 @@ def _importPySide2():
         ui = loader.load(uifile, parent)
         uifile.close()
         return ui
-    
+
     return QApplication, QtCore, QtWidgets, loadUiWidget
 
 
@@ -63,18 +67,6 @@ def _importQtPy():
 QApplication, QtCore, QtWidgets, loadUiWidget, Slot= _importQtPy()
 #QApplication, QtCore, QtWidgets, loadUiWidget= _importPyQt5()
 
-import sys
-import os
-import numpy as np
-import pyqtgraph as pg
-from pyqtgraph.colormap import ColorMap
-
-import pysilico
-from plico.rpc.zmq_remote_procedure_call import ZmqRpcTimeoutError
-from pysilico.types.camera_frame import CameraFrame
-
-__version__= "$Id: $"
-
 
 
 
@@ -96,17 +88,9 @@ class CameraControlGui(QtWidgets.QMainWindow):
         self._counterUpper= 0
         self._lastCounterUpper= 0
 
-        path = os.path.dirname(os.path.abspath(__file__))
-        uiPath= os.path.join(path, 'camera_control_gui.ui')
-        #self._ui= uic.loadUi(uiPath, self)
-        try:
-        #    self._ui = loadUiWidget(uiPath, self)
-            raise Exception("Want an exception")
-        except Exception as e:
-            print("Caught %s. Trying to load file" % str(e))
-            from pysilico.gui.camera_control_gui_ui import Ui_MainWindow
-            self._ui = Ui_MainWindow()
-            self._ui.setupUi(self)
+        from pysilico.gui.camera_control_gui_ui import Ui_MainWindow
+        self._ui = Ui_MainWindow()
+        self._ui.setupUi(self)
 
         print(self)
         print(self._ui)
@@ -254,57 +238,11 @@ class CameraControlGui(QtWidgets.QMainWindow):
         self._counterUpper+= 1
 
 
-    def _executePlotUpperFAKE(self):
-        self._ui.imageShowWidget.setImage(
-            self._sinValues[self._counterUpper % 100])
-        self._counterUpper+= 1
-
-
-
-    def _cacheData(self):
-        self._randomValues= np.random.rand(100, 100, 100)
-        self._sinValues= self._randomValues +\
-            3* np.sin(2* np.pi/ 50* np.arange(100))
-        self._xValues= np.arange(100)
-
-
-    def _createColorMapBGYR(self):
-        pos = np.array([0.0, 0.33, 0.66, 1.0])
-        color = np.array([[0, 0, 255, 255],
-                          [0, 255, 0, 255],
-                          [255, 255, 0, 255],
-                          [255, 0, 0, 255]], dtype=np.ubyte)
-        cmap = pg.ColorMap(pos, color, ColorMap.RGB)
-        lut = cmap.getLookupTable(0.0, 1.0, 256)
-        return lut
-
-    def _createColorMapRed(self):
-        pos = np.array([0.0, 0.5, 1.0])
-        color = np.array([[0, 0, 0, 255],
-                          [128, 32, 0, 255],
-                          [255, 64, 0, 255]], dtype=np.ubyte)
-        cmap = pg.ColorMap(pos, color, ColorMap.RGB)
-        lut = cmap.getLookupTable(0.0, 1.0, 256)
-        return lut
-
-
-
     def _setUpPlotUpper(self):
-#         iv = self._ui.imageView
-#         iv.getView().setBackgroundColor('w')
-#         iv.getHistogramWidget().setBackground('w')
-#         iv.getHistogramWidget().hide()
-# 
-#         self._imageItem = pg.ImageItem()
-#         self._imageItem.setBorder('k')
-#         iv.addItem(self._imageItem)
-#         self._imageItem.setLookupTable(self._createColorMapBGYR())
-#         self._imageItem.setLevels([0, 1])
-
         self._ui.imageShowWidget.setBackgroundColor('w')
         self._ui.imageShowWidget.setColormap(ColorMaps.GREY)
         self._ui.imageShowWidget.setImageSaturationValues(
-            40, 1000)
+            40, 4000)
         self._ui.imageShowWidget.enableSaturationOverlay(False)
 
 

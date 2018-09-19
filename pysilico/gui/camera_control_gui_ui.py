@@ -10,6 +10,7 @@
 
 from Qt import QtCompat, QtCore, QtGui, QtWidgets
 
+
 class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         MainWindow.setObjectName("MainWindow")
@@ -162,4 +163,5 @@ class Ui_MainWindow(object):
         self.labelFramerateInHz.setText(QtCompat.translate("MainWindow", "Framerate [Hz]", None, -1))
         self.labelBinning.setText(QtCompat.translate("MainWindow", "Binning", None, -1))
 
-from plico.gui.image_show_widget.image_show_basic_widget import ImageShowBasicWidget
+
+from pysilico.gui.image_show_widget.image_show_basic_widget import ImageShowBasicWidget
