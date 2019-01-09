@@ -180,6 +180,7 @@ class ImageShowBasicWidget(QtWidgets.QWidget):
 
         #self._addOverlay()
         self._setupSaturarationOverlay()
+        self._setupCrossHairOverlay()
         self._setupMouseMovedSignalProxy()
 
         self.view.register(self.name)
@@ -222,6 +223,17 @@ class ImageShowBasicWidget(QtWidgets.QWidget):
             self._colormaps.get(ColorMaps.SATURATION))
 
 
+    def _setupCrossHairOverlay(self):
+        self._crossHairCoords= None
+        self._crossHairOverlayImageItem= ImageItem()
+        self._crossHairOverlayImage= None
+        self.view.addItem(self._crossHairOverlayImageItem)
+        self._crossHairOverlayImageItem.setCompositionMode(
+            QtGui.QPainter.CompositionMode_Screen)
+        self._crossHairOverlayImageItem.setLookupTable(
+            self._colormaps.get(ColorMaps.GREY))
+
+
 #     def _addOverlay(self):
 #         self.overlayImageItem = ImageItem()
 #         self.view.addItem(self.overlayImageItem)
@@ -241,6 +253,8 @@ class ImageShowBasicWidget(QtWidgets.QWidget):
         if key == QtCore.Qt.Key_C:
             print("event key %s: rollColorMap" % str(key))
             self._rollColorMap()
+        if key == QtCore.Qt.Key_H:
+            self._onCrossHairKeyEvent()
         if key == QtCore.Qt.Key_L:
             self._useAutoLevels= not self._useAutoLevels
             print("event key %s: toggle autolevels %s" % (
@@ -265,6 +279,18 @@ class ImageShowBasicWidget(QtWidgets.QWidget):
         self.imageItem.setLookupTable(
             self._colormaps.get(colorMapName))
         self._currentColorMapName= colorMapName
+
+
+    def _onCrossHairKeyEvent(self):
+        crossHairCoords= [self._cursorx, self._cursory]
+        if self._crossHairCoords is None:
+            self._crossHairCoords= crossHairCoords
+            print("set cross hair in x:%d y:%d" % (
+                self._crossHairCoords[1],
+                self._crossHairCoords[0]))
+        else:
+            self._crossHairCoords= None
+            print("delete cross hair")
 
 
     def _rollColorMap(self):
@@ -301,6 +327,21 @@ class ImageShowBasicWidget(QtWidgets.QWidget):
 
     def enableSaturationOverlay(self, trueOrFalse):
         self._wantsSaturationOverlay= trueOrFalse
+
+
+    def _showCrossHair(self):
+        crossHair= np.ones(self.imageDisp.shape, dtype=np.ubyte) * 0
+        if self._crossHairCoords:
+            crossHair[self._crossHairCoords[0], :]= 255
+            crossHair[:, self._crossHairCoords[1]]= 255
+            if not np.array_equal(crossHair, self._crossHairOverlayImage):
+                self._crossHairOverlayImageItem.setImage(
+                    crossHair, levels=[0, 255])
+                self._crossHairOverlayImage= crossHair
+        else:
+            if self._crossHairOverlayImage is not None:
+                self._crossHairOverlayImageItem.clear()
+                self._crossHairOverlayImage= None
 
 
     def _showSaturationOverlay(self):
@@ -457,6 +498,7 @@ class ImageShowBasicWidget(QtWidgets.QWidget):
         self.imageItem.setImage(image,
                                 autoLevels=self._useAutoLevels)
         self._showSaturationOverlay()
+        self._showCrossHair()
 
 
     def _getProcessedImage(self):
