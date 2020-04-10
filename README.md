@@ -27,7 +27,9 @@ pip install pysilico
 
 On the server 
 
-First install Vimba (that comes with the camera, or download Vimba SDK from 
+First install Vimba (that comes with the camera, or download Vimba SDK from AVT).
+Then install pysilico-server
+
 ```
 pip install pysilico-server
 ```
