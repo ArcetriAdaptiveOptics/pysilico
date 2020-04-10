@@ -1,17 +1,21 @@
 # PYSILICO: Prosilica AVT camera controller for Plico
 
+[![Build Status][travis]][travislink]  [![Coverage Status][coveralls]][coverallslink]  [![Documentation Status](https://readthedocs.org/projects/pysilico/badge/?version=latest)](https://pysilico.readthedocs.io/en/latest/?badge=latest) [![PyPI version][pypiversion]][pypiversionlink]
+
+
 | [![Build Status][travis]][travislink] | [![Coverage Status][coveralls]][coverallslink] | 
 
 pysilico is an application to control [Allied AVT/Prosilica][allied] cameras (and possibly other GigE cameras) under the [plico][plico] environment.
 
-
-
-[plico]: https://github.com/lbusoni/plico
+[plico]: https://github.com/ArcetriAdaptiveOptics/plico
+[travis]: https://travis-ci.com/ArcetriAdaptiveOptics/pysilico.svg?branch=master "go to travis"
+[travislink]: https://travis-ci.com/ArcetriAdaptiveOptics/pysilico
+[coveralls]: https://coveralls.io/repos/github/ArcetriAdaptiveOptics/pysilico/badge.svg?branch=master "go to coveralls"
+[coverallslink]: https://coveralls.io/github/ArcetriAdaptiveOptics/pysilico
 [allied]: https://www.alliedvision.com
-[travis]: https://travis-ci.com/lbusoni/pysilico.svg?branch=master "go to travis"
-[travislink]: https://travis-ci.com/lbusoni/pysilico
-[coveralls]: https://coveralls.io/repos/github/lbusoni/pysilico/badge.svg?branch=master "go to coveralls"
-[coverallslink]: https://coveralls.io/github/lbusoni/pysilico
+[pypiversion]: https://badge.fury.io/py/pysilico.svg
+[pypiversionlink]: https://badge.fury.io/py/pysilico
+
 
 
 ## Installation
