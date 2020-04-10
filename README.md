@@ -3,8 +3,6 @@
 [![Build Status][travis]][travislink]  [![Coverage Status][coveralls]][coverallslink]  [![Documentation Status](https://readthedocs.org/projects/pysilico/badge/?version=latest)](https://pysilico.readthedocs.io/en/latest/?badge=latest) [![PyPI version][pypiversion]][pypiversionlink]
 
 
-| [![Build Status][travis]][travislink] | [![Coverage Status][coveralls]][coverallslink] | 
-
 pysilico is an application to control [Allied AVT/Prosilica][allied] cameras (and possibly other GigE cameras) under the [plico][plico] environment.
 
 [plico]: https://github.com/ArcetriAdaptiveOptics/plico
