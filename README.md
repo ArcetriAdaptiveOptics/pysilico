@@ -37,13 +37,7 @@ First install Vimba (that comes with the camera, or download Vimba SDK from AVT 
 Then install the Vimba python wrapper. Check that the installation is successfull by running the provided example, like the one below:
 
 ```
-(pysilico) lbusoni@argos:~/Downloads/Vimba_5_0/VimbaPython/Examples$ py
-Python 3.8.11 (default, Aug  3 2021, 15:09:35) 
-Type 'copyright', 'credits' or 'license' for more information
-IPython 7.26.0 -- An enhanced Interactive Python. Type '?' for help.
-Using matplotlib backend: Qt5Agg
-
-In [1]: exec(open('list_cameras.py').read())
+(pysilico) lbusoni@argos:~/Downloads/Vimba_5_0/VimbaPython/Examples$ python list_cameras.py 
 //////////////////////////////////////
 /// Vimba API List Cameras Example ///
 //////////////////////////////////////
@@ -54,6 +48,8 @@ Cameras found: 1
 /// Camera ID     : DEV_000F3101C686
 /// Serial Number : 02-2130A-06774
 /// Interface ID  : eno2
+
+(pysilico) lbusoni@argos:~/Downloads/Vimba_5_0/VimbaPython/Examples$ 
 ```
 
 
