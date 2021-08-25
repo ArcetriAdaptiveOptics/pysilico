@@ -18,17 +18,47 @@ pysilico is an application to control [Allied AVT/Prosilica][allied] cameras (an
 
 ## Installation
 
-On the client 
+### On client
+
+On the client machine
 
 ```
 pip install pysilico
 ```
 
+### On the server
 
-On the server 
+On the server machine install the proprietary driver for the camera you want to control. Currently only AVT/Prosilica camera are supported through Vimba
 
-First install Vimba (that comes with the camera, or download Vimba SDK from AVT).
-Then install pysilico-server
+#### For AVT / Prosilica
+
+First install Vimba (that comes with the camera, or download Vimba SDK from AVT website). Check that the Vimba installation is successful and that the camera is accessible by the server using VimbaViewer, the standalone application provided in Vimba SDK. You should be able to see the cameras in the network and stream images.
+
+Then install the Vimba python wrapper. Check that the installation is successfull by running the provided example, like the one below:
+
+```
+(pysilico) lbusoni@argos:~/Downloads/Vimba_5_0/VimbaPython/Examples$ py
+Python 3.8.11 (default, Aug  3 2021, 15:09:35) 
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.26.0 -- An enhanced Interactive Python. Type '?' for help.
+Using matplotlib backend: Qt5Agg
+
+In [1]: exec(open('list_cameras.py').read())
+//////////////////////////////////////
+/// Vimba API List Cameras Example ///
+//////////////////////////////////////
+
+Cameras found: 1
+/// Camera Name   : GC1350M
+/// Model Name    : GC1350M (02-2130A)
+/// Camera ID     : DEV_000F3101C686
+/// Serial Number : 02-2130A-06774
+/// Interface ID  : eno2
+```
+
+
+#### Install server
+As a last step you always have to install the generic pysilico-server
 
 ```
 pip install pysilico-server
