@@ -10,8 +10,8 @@ DESCRIPTION = 'Allied Vision AVT-Prosilica camera controller with PLICO'
 URL = 'https://github.com/lbusoni/pysilico'
 EMAIL = 'lorenzo.busoni@inaf.it'
 AUTHOR = 'Lorenzo Busoni'
-LICENSE= 'MIT'
-KEYWORDS= 'plico, prosilica, avt, camera, laboratory, instrumentation control',
+LICENSE = 'MIT'
+KEYWORDS = 'plico, prosilica, avt, camera, laboratory, instrumentation control',
 
 
 here = os.path.abspath(os.path.dirname(__file__))
@@ -19,7 +19,6 @@ here = os.path.abspath(os.path.dirname(__file__))
 about = {}
 with open(os.path.join(here, NAME, '__version__.py')) as f:
     exec(f.read(), about)
-
 
 
 class UploadCommand(Command):
@@ -47,7 +46,8 @@ class UploadCommand(Command):
             pass
 
         self.status('Building Source and Wheel (universal) distribution…')
-        os.system('{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
+        os.system(
+            '{0} setup.py sdist bdist_wheel --universal'.format(sys.executable))
 
         self.status('Uploading the package to PyPI via Twine…')
         os.system('twine upload dist/*')
@@ -69,6 +69,7 @@ setup(name=NAME,
                    'Programming Language :: Python :: 3.6',
                    ],
       long_description=open('README.md').read(),
+      long_description_content_type='text/markdown',
       url=URL,
       author_email=EMAIL,
       author=AUTHOR,
