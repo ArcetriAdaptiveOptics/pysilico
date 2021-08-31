@@ -1,6 +1,6 @@
 
 import os
-import pyfits
+import astropy.io.fits as pyfits
 import numpy as np
 
 from plico.utils.decorator import override, returnsNone, returns, cacheResult
@@ -22,7 +22,6 @@ class CalibrationManager(AbstractCalibrationManager,
     def __init__(self, calibrationRootDir):
         self._calibRootDir = calibrationRootDir
 
-
     def _checkTag(self, tag, tagPurpose="unspecified"):
         if tag is None:
             raise CalibrationManagerException(
@@ -31,8 +30,6 @@ class CalibrationManager(AbstractCalibrationManager,
             raise CalibrationManagerException(
                 "A tag name (%s) must be valid but it is '%s'" % (
                     tagPurpose, tag))
-
-
 
     def getDarkFrameFileName(self, tag):
         return os.path.join(self._calibRootDir,
@@ -45,27 +42,26 @@ class CalibrationManager(AbstractCalibrationManager,
         self._checkTag(tag, "DarkCameraFrame")
         assert isinstance(darkCameraFrame, CameraFrame)
 
-        fileName= self.getDarkFrameFileName(tag)
+        fileName = self.getDarkFrameFileName(tag)
         self._createFoldersIfMissing(fileName)
         pyfits.writeto(fileName, darkCameraFrame.toNumpyArray(),
                        fitsHeader,
                        clobber=False)
         pyfits.append(fileName, np.array([darkCameraFrame.counter()]))
 
-
     @override
     @returns(CameraFrame)
     @cacheResult
     def loadDarkFrame(self, tag):
         self._checkTag(tag, "DarkCameraFrame")
-        fileName= self.getDarkFrameFileName(tag)
-        hdr= pyfits.getheader(fileName)
-        hduList= pyfits.open(fileName)
-        rawArray= hduList[0].data
-        counter= hduList[1].data[0]
+        fileName = self.getDarkFrameFileName(tag)
+        hdr = pyfits.getheader(fileName)
+        hduList = pyfits.open(fileName)
+        rawArray = hduList[0].data
+        counter = hduList[1].data[0]
         try:
-            snapshot= Snapshotable.fromFITSHeader(hdr)
+            snapshot = Snapshotable.fromFITSHeader(hdr)
         except Exception:
-            snapshot= dict()
-        darkCameraFrame= CameraFrame(rawArray, counter)
+            snapshot = dict()
+        darkCameraFrame = CameraFrame(rawArray, counter)
         return darkCameraFrame

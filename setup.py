@@ -13,7 +13,6 @@ AUTHOR = 'Lorenzo Busoni'
 LICENSE = 'MIT'
 KEYWORDS = 'plico, prosilica, avt, camera, laboratory, instrumentation control',
 
-
 here = os.path.abspath(os.path.dirname(__file__))
 # Load the package's __version__.py module as a dictionary.
 about = {}
@@ -64,9 +63,7 @@ setup(name=NAME,
       version=about['__version__'],
       classifiers=['Development Status :: 4 - Beta',
                    'Operating System :: POSIX :: Linux',
-                   'Programming Language :: Python :: 2.7',
-                   'Programming Language :: Python :: 3.5',
-                   'Programming Language :: Python :: 3.6',
+                   'Programming Language :: Python :: 3',
                    ],
       long_description=open('README.md').read(),
       long_description_content_type='text/markdown',
@@ -97,7 +94,7 @@ setup(name=NAME,
                         "configparser",
                         "six",
                         "appdirs",
-                        "pyfits",
+                        "astropy",
                         "futures",
                         "rebin",
                         "pyqtgraph",
