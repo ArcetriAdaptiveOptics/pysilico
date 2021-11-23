@@ -38,6 +38,10 @@ def _importPySide2():
 
 def _importQtPy():
     import os
+    
+    # 211123 workaround for window not showing bug. When can this be removed? Bah...
+    # https://stackoverflow.com/questions/64818879/is-there-any-solution-regarding-to-pyqt-library-doesnt-work-in-mac-os-big-sur
+    os.environ["QT_MAC_WANTS_LAYER"]='1'
 
     if "QT_PREFERRED_BINDING" not in os.environ:
         os.environ["QT_PREFERRED_BINDING"] = os.pathsep.join(
