@@ -16,7 +16,7 @@ def _importPyQt5():
     def loadUiWidget(uifilename, parent=None):
         return uic.loadUi(uifilename, parent)
 
-    return QApplication, QtCore, QtWidgets, loadUiWidget
+    return QApplication, QtCore, QtWidgets, loadUiWidget, QtCore.pyqtSlot
 
 
 def _importPySide2():
@@ -33,7 +33,7 @@ def _importPySide2():
         uifile.close()
         return ui
 
-    return QApplication, QtCore, QtWidgets, loadUiWidget
+    return QApplication, QtCore, QtWidgets, loadUiWidget, QtCore.Slot
 
 
 def _importQtPy():
@@ -67,9 +67,9 @@ def _importQtPy():
     return QApplication, QtCore, QtWidgets, loadUiWidget, Slot
 
 
-#QApplication, QtCore, QtWidgets, loadUiWidget= _importPySide2()
-QApplication, QtCore, QtWidgets, loadUiWidget, Slot= _importQtPy()
-#QApplication, QtCore, QtWidgets, loadUiWidget= _importPyQt5()
+#QApplication, QtCore, QtWidgets, loadUiWidget, Slot= _importPySide2()
+#QApplication, QtCore, QtWidgets, loadUiWidget, Slot= _importQtPy()
+QApplication, QtCore, QtWidgets, loadUiWidget, Slot= _importPyQt5()
 
 
 

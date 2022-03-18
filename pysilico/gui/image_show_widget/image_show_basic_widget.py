@@ -7,16 +7,9 @@ from pyqtgraph.colormap import ColorMap
 import os
 from numpy import nanmax, nanmin
 
-if "QT_PREFERRED_BINDING" not in os.environ:
-    os.environ["QT_PREFERRED_BINDING"] = os.pathsep.join(
-        #["PySide2", "PyQt5", "PySide", "PyQt4"]
-        ["PyQt5", "PySide2", "PySide", "PyQt4"]
-    )
-
-import Qt
-from Qt import QtCore
-from Qt import QtWidgets
-from Qt import QtGui
+from PyQt5 import QtCore
+from PyQt5 import QtWidgets
+from PyQt5 import QtGui
 
 
 """
