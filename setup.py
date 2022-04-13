@@ -93,7 +93,7 @@ setup(name=NAME,
                         "six",
                         "astropy",
                         "pyqtgraph",
-                        "pyside2",
+                        "PyQt5"
                         ],
       include_package_data=True,
       test_suite='test',
