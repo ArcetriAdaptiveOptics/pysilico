@@ -11,6 +11,7 @@ from pysilico.types.camera_frame import CameraFrame
 from plico.utils.snapshotable import Snapshotable
 from plico.client.serverinfo_client import ServerInfoClient
 from plico.client.hackerable_client import HackerableClient
+import astropy.units as u
 
 
 
@@ -116,8 +117,11 @@ class CameraClient(AbstractCameraClient,
 
     @override
     @returns(float)
-    def exposureTime(self):
-        return float(self.getStatus().exposureTimeInMilliSec)
+    def exposureTime(self, unit=False):
+        if unit == False:
+            return float(self.getStatus().exposureTimeInMilliSec)
+        else:
+            return float(self.getStatus().exposureTimeInMilliSec) * u.ms
 
 
     @override
