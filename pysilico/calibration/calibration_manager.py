@@ -46,7 +46,7 @@ class CalibrationManager(AbstractCalibrationManager,
         self._createFoldersIfMissing(fileName)
         pyfits.writeto(fileName, darkCameraFrame.toNumpyArray(),
                        fitsHeader,
-                       clobber=False)
+                       overwrite=False)
         pyfits.append(fileName, np.array([darkCameraFrame.counter()]))
 
     @override
