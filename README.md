@@ -73,10 +73,10 @@ cd ~/Downloads/Vimba_6_0/VimbaPython/Examples
 python list_cameras.py
 ```
 
-The ouput shows a camera has been properly detected.
+The ouput shows that camera(s) has been properly detected.
 
 ```
-(pysilico) lbusoni@argos:~/Downloads/Vimba_5_0/VimbaPython/Examples$ python list_cameras.py 
+(pysilico) lbusoni@argos:~/Downloads/Vimba_6_0/VimbaPython/Examples$ python list_cameras.py 
 //////////////////////////////////////
 /// Vimba API List Cameras Example ///
 //////////////////////////////////////
@@ -91,15 +91,11 @@ Cameras found: 1
 
 
 #### Install server
-As a last step you always have to install the generic pysilico-server
+As a last step you always have to install the package `pysilico-server`
 
 ```
 pip install pysilico-server
 ```
-
-The pysilico-server package installs also the client package.
-
-
 
 
 ## Usage
@@ -218,10 +214,10 @@ Use the Anaconda GUI or in terminal
 conda create --name pysilico
 ```
 
-To create an environment with a specific python version
+To create an environment with a specific python version (you need > 3.7 for Vimba)
 
 ```
-conda create --name pysilico python=2.6
+conda create --name pysilico python=3.8
 ```
 
 
@@ -233,29 +229,7 @@ conda install --name pysilico matplotlib scipy ipython numpy
 
 ### Packaging and distributing
 
-See https://packaging.python.org/tutorials/distributing-packages/#
+1. Update the version in version.py and commit
+2. Create a new release
+3. If you have the proper rights (see PYPI_API_TOKEN in Settings/Secrets), the Action automatically builds and uploads the wheel on pypi
 
-To make a source distribution
-
-```
-python setup.py sdist
-```
-
-and the tar.gz is created in ../dist
-
-
-You can make a universal wheel 
-
-```
-python setup.py bdist_wheel 
-```
-
-The wheels are created in ../dist. I suppose one can delete 
-pysilico/build now and distribute the files in ../dist
-
-
-To upload on pip (but do you really want to make it public?)
-
-```
-twine upload ../dist/*
-```
