@@ -36,9 +36,44 @@ On the server machine install the proprietary driver for the camera you want to 
 
 #### For AVT / Prosilica
 
-First install Vimba (that comes with the camera, or download Vimba SDK from AVT website). Check that the Vimba installation is successful and that the camera is accessible by the server using VimbaViewer, the standalone application provided in Vimba SDK. You should be able to see the cameras in the network and stream images.
+First install Vimba (that comes with the camera, or download Vimba SDK from AVT website). Assuming you have downloaded and unpacked Vimba6 in the Downloads folder on a Linux machine:
 
-Then install the Vimba python wrapper. Check that the installation is successfull by running the provided example, like the one below:
+```
+cd ~/Downloads/Vimba_6_0/VimbaGigETL/
+sudo ./Install.sh
+```
+
+Check that the Vimba installation is successful (you may need to log out and log in) and that the camera is accessible by the server using VimbaViewer, the standalone application provided in Vimba SDK. You should be able to see the cameras reachable in the network and you should be able to stream images.
+
+```
+cd ~/Downloads/Vimba_6_0/Tools/Viewer/Bin/x86_64bit
+./VimbaViewer
+```
+
+Then install the Vimba python wrapper. It is suggested to use a dedicated python virtual environment, like conda (check elsewhere how to install Anaconda and create a virtual environment). 
+
+Now you can install the Vimba python wrapper in the 
+
+```
+cd ~/Downloads/Vimba_6_0/VimbaPython/
+./Install.sh
+```
+
+The script `Install.sh` is to date not working with conda virtual envs. If you are using conda and the command above fails, the following should do the work :
+
+```
+cd ~/Downloads/Vimba_6_0/VimbaPython/Source
+pip install .
+```
+
+Check that the installation is successfull by running the provided example, like the one below:
+
+```
+cd ~/Downloads/Vimba_6_0/VimbaPython/Examples
+python list_cameras.py
+```
+
+The ouput shows a camera has been properly detected.
 
 ```
 (pysilico) lbusoni@argos:~/Downloads/Vimba_5_0/VimbaPython/Examples$ python list_cameras.py 
@@ -52,8 +87,6 @@ Cameras found: 1
 /// Camera ID     : DEV_000F3101C686
 /// Serial Number : 02-2130A-06774
 /// Interface ID  : eno2
-
-(pysilico) lbusoni@argos:~/Downloads/Vimba_5_0/VimbaPython/Examples$ 
 ```
 
 
@@ -71,32 +104,81 @@ The pysilico-server package installs also the client package.
 
 ## Usage
 
+### Edit config file
+
+The config file location depends on the operating system. In Ubuntu is `/home/labot/.config/inaf.arcetri.ao.pysilico_server/pysilico_server.conf`. When the server is started, it prints the config file location on standard output.
+Open the file and adapt it to your case.
+
+In this example we want `pysilico_server` to control 2 cameras: a Manta 419 whose IP address is 192.168.29.189 used for a SH WFS, and a GC1350 (IP 192.168.29.194) used as PSF monitor. We reduce the streaming rate to 20MB/s in such a way that no packet will be lost during transfer to the server PC. 
+
+Every `[cameraN]` entry in the config file correspond to a pysilico server; you may add as many as you want. Every `[cameraN]` entry must have a `camera=` key linking to a `[deviceX]` entry that specifies the camera model, IP, etc. 
+
+```
+[deviceManta419]
+name= AVT Manta G-419B 5CA8
+model= avt
+ip_address= 192.168.29.189
+streambytespersecond= 20000000
+binning= 1
+
+[deviceGC1350M]
+name= AVT GC 1350M C686
+model= avt
+ip_address= 192.168.29.194
+streambytespersecond= 20000000
+binning= 1
+
+[camera1]
+name= SH WFS Ibis
+log_level= info
+camera= deviceManta419
+host= localhost
+port= 7100
+
+[camera2]
+name= PSF Ibis
+log_level= info
+camera= deviceGC1350M
+host= localhost
+port= 7110
+```
+
+
 ### Starting Servers
 
-Starts the 2 servers that control one device each.
+Start the servers with 
 
 ```
 pysilico_start
 ```
 
-### Using the GUI
+The servers are logging info in a dedicate log file. The log file name is printed on the standard output when the server is started. 
 
-Run `pysilico_gui`
+On Ubuntu it can be in `/home/labot/.cache/inaf.arcetri.ao.pysilico_server/log/camera1.log` (and camera2.log and so on for the other servers)
+
+Check in the log file that the server is properly running and communicating with the camera; it should periodically dump a line like "Stepping at xx Hz"  
+
   
 
 ### Using the client module 
 
-In a python terminal on the client computer:
+We assume that `pysilico_server` runs on '192.168.29.132'.  
+
+In a python terminal on a client computer on which `pysilico` has been installed:
 
 ```
 In [1]: import pysilico
 
-In [2]: cam1= pysilico.camera('192.168.1.18', 7100)
+In [2]: cam_sh= pysilico.camera('192.168.29.132', 7100)
 
-In [3]: cam2= pysilico.camera('192.168.1.18', 7110)
+In [3]: cam_psf= pysilico.camera('192.168.29.132', 7110)
 
-In [4]: frames= cam1.getFutureFrames(10)
+In [4]: frames= cam_sh.getFutureFrames(10)
 ```
+
+### Using the GUI
+
+Run `pysilico_gui`
 
 ### Stopping pysilico
 
