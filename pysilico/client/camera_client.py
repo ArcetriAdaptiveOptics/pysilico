@@ -141,6 +141,7 @@ class CameraClient(AbstractCameraClient,
         snapshot[SnapshotEntry.FRAME_WIDTH_PX]= status.frameWidth
         snapshot[SnapshotEntry.FRAME_HEIGHT_PX]= status.frameHeight
         snapshot[SnapshotEntry.BINNING]= status.binning
+        snapshot[SnapshotEntry.PARAMETERS]= status.parameters
         return Snapshotable.prepend(prefix, snapshot)
 
 
@@ -195,3 +196,14 @@ class CameraClient(AbstractCameraClient,
             self._requestSocket, 'setDarkFrame',
             [darkFrame],
             timeout=timeoutSec)
+
+    @override
+    def setParameter(self, name, value,
+                     timeoutSec=Timeout.GET_FRAME_TIMEOUT):
+        assert isinstance(name, str)
+        return self._rpcHandler.sendRequest(
+            self._requestSocket, 'setParameter',
+            [name, value],
+            timeout=timeoutSec)
+
+

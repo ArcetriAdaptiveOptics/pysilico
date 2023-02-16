@@ -6,13 +6,13 @@ from pysilico.types.camera_frame import CameraFrame
 from pysilico.types.camera_status import CameraStatus
 
 
-
 class SnapshotEntry(object):
     EXPOSURE_TIME_MS= "EXPOSURE_TIME_MS"
     FRAME_WIDTH_PX= "WIDTH_PX"
     FRAME_HEIGHT_PX= "HEIGHT_PX"
     CAMERA_NAME= 'NAME'
     BINNING= "BINNING"
+    PARAMETERS="PARAMETERS"
 
 
 class MultipleFrameRetriever():
@@ -52,8 +52,6 @@ class MultipleFrameRetriever():
         frame = CameraFrame.fromNumpyArray(cube.squeeze())
         frame.setCounter(lastCounter)
         return frame
-
-
 
 
 class AbstractCameraClient(with_metaclass(abc.ABCMeta, object)):
@@ -135,3 +133,9 @@ class AbstractCameraClient(with_metaclass(abc.ABCMeta, object)):
     @abc.abstractmethod
     def setDarkFrame(self, darkFrame):
         assert False
+
+    @abc.abstractmethod
+    def setParameter(self, name, value):
+        '''Device-specific parameters'''
+        assert False
+
