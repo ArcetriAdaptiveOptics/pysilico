@@ -107,3 +107,5 @@ venv.bak/
 
 .DS_Store
 
+.vscode/settings.json
+.settings/org.eclipse.core.resources.prefs
