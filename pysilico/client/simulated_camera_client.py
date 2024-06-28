@@ -117,6 +117,10 @@ class SimulatedCameraClient(AbstractCameraClient):
                              self.exposureTime())
         return status
 
+    @override
+    def setParameter(self, name, value):
+        '''We don't have any'''
+        raise Exception('Parameter %s is not valid' % str(name))
 
 
     @override
@@ -128,12 +132,10 @@ class SimulatedCameraClient(AbstractCameraClient):
     def getFrameRate(self):
         return self._cameraDevice.getFrameRate()
 
-
     @override
     @returns(CameraFrame)
     def getDarkFrame(self):
         return self._darkFrame
-
 
     @override
     def setDarkFrame(self, darkFrame):

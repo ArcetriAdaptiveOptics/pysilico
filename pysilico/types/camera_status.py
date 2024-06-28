@@ -9,7 +9,8 @@ class CameraStatus(object):
                  dtype,
                  binning,
                  exposureTimeInMilliSec,
-                 frameRate):
+                 frameRate,
+                 parameters=None):
         self.name= name
         self.frameWidth= frameWidth
         self.frameHeight= frameHeight
@@ -17,3 +18,4 @@ class CameraStatus(object):
         self.binning= binning
         self.exposureTimeInMilliSec= exposureTimeInMilliSec
         self.frameRate= frameRate
+        self.parameters = parameters or {}

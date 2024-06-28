@@ -1,4 +1,6 @@
 #!/usr/bin/env python
+import threading
+import time
 from pysilico.client.abstract_camera_client import AbstractCameraClient,\
     MultipleFrameRetriever, SnapshotEntry
 from plico.rpc.abstract_remote_procedure_call import \
@@ -44,7 +46,27 @@ class CameraClient(AbstractCameraClient,
         self._shape= None
         self._dtype= None
         self._lastFrame= None
+        self._timer = threading.Timer(1.0, self._build_methods)
+        self._timer.start()
 
+    def _build_methods(self):
+        while True:
+            try:
+                status = self.getStatus()
+                break
+            except Exception:
+                time.sleep(1)
+        par_names = status.parameters.keys()
+        for par_name in par_names:
+            try:
+                set_func = lambda self, value, name=par_name: self.setParameter(name, value)
+                get_func = lambda self, name=par_name: self.getStatus().parameters[name]
+                set_name = 'set' + par_name[0].upper() + par_name[1:]
+                get_name = 'get' + par_name[0].upper() + par_name[1:]
+                setattr(self, set_name, set_func.__get__(self, self.__class__))
+                setattr(self, get_name, get_func.__get__(self, self.__class__))
+            except Exception as e:
+                print(f'Error creating method for parameter {par_name}:', e)
 
     @override
     @returns(CameraStatus)
@@ -141,6 +163,7 @@ class CameraClient(AbstractCameraClient,
         snapshot[SnapshotEntry.FRAME_WIDTH_PX]= status.frameWidth
         snapshot[SnapshotEntry.FRAME_HEIGHT_PX]= status.frameHeight
         snapshot[SnapshotEntry.BINNING]= status.binning
+        snapshot[SnapshotEntry.PARAMETERS]= status.parameters
         return Snapshotable.prepend(prefix, snapshot)
 
 
@@ -195,3 +218,14 @@ class CameraClient(AbstractCameraClient,
             self._requestSocket, 'setDarkFrame',
             [darkFrame],
             timeout=timeoutSec)
+
+    @override
+    def setParameter(self, name, value,
+                     timeoutSec=Timeout.GET_FRAME_TIMEOUT):
+        assert isinstance(name, str)
+        return self._rpcHandler.sendRequest(
+            self._requestSocket, 'setParameter',
+            [name, value],
+            timeout=timeoutSec)
+
+
