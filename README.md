@@ -1,6 +1,6 @@
 # PYSILICO: Prosilica AVT camera controller for Plico
 
- ![Python package](https://github.com/ArcetriAdaptiveOptics/pysilico/workflows/Python%20package/badge.svg)
+ ![Python package](https://img.shields.io/github/actions/workflow/status/ArcetriAdaptiveOptics/pysilico/pythontest.yml)
  [![codecov](https://codecov.io/gh/ArcetriAdaptiveOptics/pysilico/branch/master/graph/badge.svg?token=GTDOW6IWDE)](https://codecov.io/gh/ArcetriAdaptiveOptics/pysilico)
  [![Documentation Status](https://readthedocs.org/projects/pysilico/badge/?version=latest)](https://pysilico.readthedocs.io/en/latest/?badge=latest)
  [![PyPI version][pypiversion]][pypiversionlink]

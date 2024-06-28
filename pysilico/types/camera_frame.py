@@ -6,7 +6,7 @@ class CameraFrame(object):
     def __init__(self,
                  rawArray,
                  counter=0):
-        self._array = rawArray.astype(float)
+        self._array = rawArray.astype(np.uint16)
         self._counter = counter
 
     def __eq__(self, o):
