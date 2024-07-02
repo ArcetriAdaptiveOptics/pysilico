@@ -21,8 +21,8 @@ class CameraFrameTest(unittest.TestCase):
         frame2 = self._cameraFrame.toNumpyArray()
         self.assertTrue(np.array_equal(self._frame, frame2))
 
-    def testTypeIsFloat(self):
-        self.assertEqual(float, self._cameraFrame.toNumpyArray().dtype)
+    def testTypeIsUint16(self):
+        self.assertEqual(np.uint16, self._cameraFrame.toNumpyArray().dtype)
 
     def testComparison(self):
         counter = 42
