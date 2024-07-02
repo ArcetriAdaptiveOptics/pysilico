@@ -24,3 +24,13 @@ def camera(hostname, port):
     zmqPorts= ZmqPorts(hostname, port)
     sockets= Sockets(zmqPorts, rpc)
     return CameraClient(rpc, sockets)
+
+
+def list_cameras(timeout_in_seconds=2):
+    from plico.utils.discovery_server import DiscoveryClient
+    return DiscoveryClient().run(timeout_in_seconds=timeout_in_seconds)
+
+def find(camera_name, timeout_in_seconds=2):
+    from plico.utils.discovery_server import DiscoveryClient
+    server_info = DiscoveryClient().run(camera_name, timeout_in_seconds)
+    return camera(server_info.host, server_info.port)
