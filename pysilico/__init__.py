@@ -28,9 +28,9 @@ def camera(hostname, port):
 
 def list_cameras(timeout_in_seconds=2):
     from plico.utils.discovery_server import DiscoveryClient
-    return DiscoveryClient().run(timeout_in_seconds=timeout_in_seconds)
+    return DiscoveryClient().run(timeout_in_seconds=timeout_in_seconds, filter={'server_type': 'pysilico'})
 
 def find(camera_name, timeout_in_seconds=2):
     from plico.utils.discovery_server import DiscoveryClient
-    server_info = DiscoveryClient().run(camera_name, timeout_in_seconds)
+    server_info = DiscoveryClient().run(camera_name, timeout_in_seconds, filter={'server_type': 'pysilico'})
     return camera(server_info.host, server_info.port)
