@@ -1,3 +1,6 @@
+from plico.client.discovery import plico_list, plico_get, plico_client
+from pysilico.client.client_map import client_map
+from pysilico.client.camera_client import CameraClient
 from pysilico.utils.constants import Constants
 
 
@@ -13,24 +16,16 @@ defaultConfigFilePath= _getDefaultConfigFilePath()
 
 
 def camera(hostname, port):
-
-    from pysilico.client.camera_client import CameraClient
-    from plico.rpc.zmq_remote_procedure_call import ZmqRemoteProcedureCall
-    from plico.rpc.zmq_ports import ZmqPorts
-    from plico.rpc.sockets import Sockets
-
-
-    rpc= ZmqRemoteProcedureCall()
-    zmqPorts= ZmqPorts(hostname, port)
-    sockets= Sockets(zmqPorts, rpc)
-    return CameraClient(rpc, sockets)
+    '''Generic CameraClient, kept for backward compatibility'''
+    return plico_client(CameraClient, hostname, port)
 
 
 def list_cameras(timeout_in_seconds=2):
-    from plico.utils.discovery_server import DiscoveryClient
-    return DiscoveryClient().run(timeout_in_seconds=timeout_in_seconds)
+    '''List all available pysilico servers'''
+    return plico_list(server_type='pysilico', timeout_in_seconds=timeout_in_seconds)
 
-def find(camera_name, timeout_in_seconds=2):
-    from plico.utils.discovery_server import DiscoveryClient
-    server_info = DiscoveryClient().run(camera_name, timeout_in_seconds)
-    return camera(server_info.host, server_info.port)
+
+def get(dm_name, timeout_in_seconds=2):
+    '''Get a client for a specific pysilico server'''
+    return plico_get(server_type='pysilico', name=dm_name, default_class=CameraClient,
+               timeout_in_seconds=timeout_in_seconds, client_map=client_map)

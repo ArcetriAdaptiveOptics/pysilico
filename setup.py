@@ -88,7 +88,7 @@ setup(name=NAME,
       package_data={
           'pysilico': ['conf/pysilico.conf'],
       },
-      install_requires=["plico>=0.18",
+      install_requires=["plico>=0.29",
                         "numpy",
                         "six",
                         "astropy",
