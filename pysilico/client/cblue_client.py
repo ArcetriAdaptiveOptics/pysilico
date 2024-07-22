@@ -72,7 +72,7 @@ class CBlueClient(CameraClient):
     def set_conversion_efficiency(self, conv_eff, timeoutInSec=Timeout.GENERIC_COMMAND):
         return self._rpcHandler.sendRequest(
             self._requestSocket,
-            'set_device_conversion_efficiency', [conv_eff],
+            'set_conversion_efficiency', [conv_eff],
             timeout=timeoutInSec)
     
     def get_conversion_efficiency(self, timeoutInSec=Timeout.GENERIC_COMMAND):
