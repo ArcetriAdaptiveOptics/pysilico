@@ -7,5 +7,5 @@ from plico.client.discovery import ClientMapType
 
 client_map = {
    'Ocam2k': ClientMapType(modulename='pysilico.client.ocam2k_client', classname='Ocam2kClient'),
-   'SimulatedAuxiliaryCamera': ClientMapType(modulename='pysilico.client.cblue_client', classname='CBlueClient'),
+   'CblueOneCamera': ClientMapType(modulename='pysilico.client.cblue_client', classname='CBlueClient'),
 }
