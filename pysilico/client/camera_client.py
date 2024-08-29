@@ -139,11 +139,12 @@ class CameraClient(AbstractCameraClient,
 
     @override
     @returns(float)
-    def exposureTime(self, unit=False):
+    def exposureTime(self, unit=False,
+                     timeoutInSec=Timeout.GET_FRAME_FOR_DISPLAY_TIMEOUT):
         if unit == False:
-            return float(self.getStatus().exposureTimeInMilliSec)
+            return float(self.getStatus(timeoutInSec=timeoutInSec).exposureTimeInMilliSec)
         else:
-            return float(self.getStatus().exposureTimeInMilliSec) * u.ms
+            return float(self.getStatus(timeoutInSec=timeoutInSec).exposureTimeInMilliSec) * u.ms
 
 
     @override
@@ -181,8 +182,8 @@ class CameraClient(AbstractCameraClient,
 
     @override
     @returns(int)
-    def getBinning(self):
-        return int(self.getStatus().binning)
+    def getBinning(self, timeoutInSec=Timeout.GET_FRAME_FOR_DISPLAY_TIMEOUT):
+        return int(self.getStatus(timeoutInSec=timeoutInSec).binning)
 
 
     @override
@@ -197,8 +198,8 @@ class CameraClient(AbstractCameraClient,
 
     @override
     @returns(float)
-    def getFrameRate(self):
-        return float(self.getStatus().frameRate)
+    def getFrameRate(self, timeoutInSec=Timeout.GET_FRAME_FOR_DISPLAY_TIMEOUT):
+        return float(self.getStatus(timeoutInSec=timeoutInSec).frameRate)
 
 
     @override
