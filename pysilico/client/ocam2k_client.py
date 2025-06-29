@@ -11,7 +11,7 @@ class Ocam2kClient(CameraClient):
 
     def get_emgain(self, timeoutInSec=Timeout.GENERIC_COMMAND):
         return self._rpcHandler.sendRequest(
-            self._requestSocket,
+            self.request_socket,
             'get_emgain', [],
             timeout=timeoutInSec)
 
