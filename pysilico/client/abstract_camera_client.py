@@ -139,3 +139,18 @@ class AbstractCameraClient(with_metaclass(abc.ABCMeta, object)):
         '''Device-specific parameters'''
         assert False
 
+    @abc.abstractmethod
+    @returnsNone
+    def setRois(self, rois):
+        assert False
+
+    @abc.abstractmethod
+    @returnsForExample([{'x': 0, 'y': 0, 'width': 100, 'height': 100, 'name': 'beam1'}])
+    def getRois(self):
+        assert False
+
+    @abc.abstractmethod
+    @returnsForExample({'beam1': CameraFrame(np.zeros((100,100)))})
+    def getRoiFrames(self):
+        assert False
+

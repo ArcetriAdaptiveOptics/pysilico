@@ -90,6 +90,11 @@ Cameras found: 1
 ```
 
 
+#### For the Baumer Camera
+
+This client now supports Baumer VCX cameras through the `neoapi` SDK.
+
+
 #### Install server
 As a last step you always have to install the package `pysilico-server`
 

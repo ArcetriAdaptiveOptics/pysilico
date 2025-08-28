@@ -6,7 +6,7 @@ from pysilico.client.abstract_camera_client import AbstractCameraClient,\
 from plico.rpc.abstract_remote_procedure_call import \
     AbstractRemoteProcedureCall
 from plico.utils.logger import Logger
-from plico.utils.decorator import override, returns, returnsForExample
+from plico.utils.decorator import override, returns, returnsForExample, returnsNone
 from pysilico.types.camera_status import CameraStatus
 from pysilico.utils.timeout import Timeout
 from pysilico.types.camera_frame import CameraFrame
@@ -14,6 +14,7 @@ from plico.utils.snapshotable import Snapshotable
 from plico.client.serverinfo_client import ServerInfoClient
 from plico.client.hackerable_client import HackerableClient
 import astropy.units as u
+import numpy as np
 
 
 
@@ -66,7 +67,7 @@ class CameraClient(AbstractCameraClient,
                 setattr(self, set_name, set_func.__get__(self, self.__class__))
                 setattr(self, get_name, get_func.__get__(self, self.__class__))
             except Exception as e:
-                print(f'Error creating method for parameter {par_name}:', e)
+                self._logger.notice(f'Error creating method for parameter {par_name}: {e}')
 
     @override
     @returns(CameraStatus)
@@ -228,5 +229,38 @@ class CameraClient(AbstractCameraClient,
             self._requestSocket, 'setParameter',
             [name, value],
             timeout=timeoutSec)
+
+    @override
+    @returnsNone
+    def setRois(self, rois,
+                timeoutSec=Timeout.GET_FRAME_TIMEOUT):
+        self._logger.notice(f"Setting ROIs to {rois}")
+        return self._rpcHandler.sendRequest(
+            self._requestSocket, 'set_rois',
+            [rois],
+            timeout=timeoutSec)
+
+    @override
+    @returnsForExample([{'x': 0, 'y': 0, 'width': 100, 'height': 100, 'name': 'beam1'}])
+    def getRois(self, timeoutSec=Timeout.GET_FRAME_FOR_DISPLAY_TIMEOUT):
+        return self._rpcHandler.sendRequest(
+            self._requestSocket, 'get_rois',
+            [],
+            timeout=timeoutSec)
+
+    @override
+    @returnsForExample({'beam1': CameraFrame(np.zeros((100,100)))})
+    def getRoiFrames(self, timeoutSec=Timeout.GET_FRAME_TIMEOUT):
+        # For ROI frames, we need to deserialize a dictionary of numpy arrays into CameraFrame objects
+        roi_frames_dict = self._rpcHandler.sendRequest(
+            self._requestSocket, 'get_roi_frames',
+            [],
+            timeout=timeoutSec)
+        
+        # Convert numpy arrays in the dictionary to CameraFrame objects
+        camera_frame_roi_dict = {}
+        for name, frame_array in roi_frames_dict.items():
+            camera_frame_roi_dict[name] = CameraFrame(frame_array)
+        return camera_frame_roi_dict
 
 
